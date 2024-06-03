@@ -23,11 +23,11 @@ print('-------------------------------------------------------------------------
 sys.stdout.flush()
 
 parser = argparse.ArgumentParser()
-parser.add_argument( '--real_folder', type=str, default="dataset/brats2021/seg/")
-parser.add_argument( '--generated_folder', type=str, default="dataset/brats2021/t1/")
+parser.add_argument( '--real_folder', type=str, default="real_images/")
+parser.add_argument( '--generated_folder', type=str, default="gen_images/")
 parser.add_argument( '--batch_size', type=int, default=2)
 parser.add_argument( '--run_dimension', type=int, default=2)
-parser.add_argument('--test_name', type=str, default='quality_assesment_synth_150')
+parser.add_argument('--test_name', type=str, default='quality_assesment')
 parser.add_argument('--generate_real_feats', type=bool, default=False)#If real feats have already been generated it will be loaded from saved file unless this is set to True
 
 args = parser.parse_args()
@@ -169,6 +169,7 @@ for i, file in enumerate(gen_file_paths):
 
     for j, test_file in enumerate(real_file_paths):
         print(f'Image process {j/len(real_file_paths)}')
+        sys.stdout.flush()
         test_file_path = real_folder+test_file
         image2 = torch.tensor(preprocessing.load_nifti(test_file_path))
         ssim_score.append(metrics.ssim(image1, image2))
