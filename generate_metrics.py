@@ -161,7 +161,7 @@ for i, file in enumerate(gen_file_paths):
     print(f'process: {i+1} out of {len_gen_data} images processed')
     sys.stdout.flush()
     file_path = generated_folder+file
-    image1 = torch.tensor(preprocessing.load_nifti(file_path))
+    image1 = preprocessing.normalize_tensor(torch.tensor(preprocessing.load_nifti(file_path)))
     ssim_score = []
     psnr_score = []
     brisque_score = metrics.calculate_brisque(image1, dim=run_dim)
@@ -171,7 +171,7 @@ for i, file in enumerate(gen_file_paths):
         print(f'Image process {j/len(real_file_paths)}')
         sys.stdout.flush()
         test_file_path = real_folder+test_file
-        image2 = torch.tensor(preprocessing.load_nifti(test_file_path))
+        image2 = preprocessing.normalize_tensor(torch.tensor(preprocessing.load_nifti(test_file_path)))
         ssim_score.append(metrics.ssim(image1, image2))
         psnr_score.append(metrics.psnr(image1, image2))
     ssim_scores.append(np.max(ssim_score))
